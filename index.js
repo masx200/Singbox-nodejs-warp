@@ -5,10 +5,10 @@ const warpProcess = spawn("bash", ["warp.sh"], {
   stdio: "inherit",
   env: {},
 });
-warpProcess.stdout.on("data", (data) => {
+warpProcess.stdout?.on("data", (data) => {
   console.log("data to start warp.sh:", data);
 });
-warpProcess.stderr.on("data", (data) => {
+warpProcess.stderr?.on("data", (data) => {
   console.error("stderr to start warp.sh:", data);
 });
 warpProcess.on("error", (error) => {
