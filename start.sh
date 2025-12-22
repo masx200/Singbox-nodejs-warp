@@ -60,6 +60,21 @@ download_file() {
   fi
 }
 
+# ================== 清理旧的 sing-box 可执行文件 ==================
+echo -e "\e[1;33m[清理] 正在清理旧的 sing-box 可执行文件...\e[0m"
+# 删除6位随机命名的可执行文件（旧的sing-box文件），但保留配置文件
+find "${FILE_PATH}" -type f -name '??????' -executable -exec rm -f {} \; 2>/dev/null || true
+# 额外清理：删除所有6位随机字符的文件（除了我们已知的配置文件）
+cd "${FILE_PATH}"
+for file in ??????; do
+  if [[ -f "$file" && "$file" != "uuid.txt" && "$file" != "key.txt" && "$file" != "cert.pem" && "$file" != "private.key" && "$file" != "config.json" && "$file" != "list.txt" && "$file" != "sub.txt" ]]; then
+    rm -f "$file" 2>/dev/null || true
+  fi
+done
+# 切换回脚本目录
+cd - > /dev/null
+echo -e "\e[1;32m[清理] 旧文件清理完成\e[0m"
+
 for entry in "${FILE_INFOS[@]}"; do
   URL=$(echo "$entry" | cut -d ' ' -f1)
   NAME=$(echo "$entry" | cut -d ' ' -f2)
