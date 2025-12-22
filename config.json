@@ -1,0 +1,62 @@
+{
+  "log": { "disabled": false, "level": "info" },
+  "inbounds": [{
+    "type": "hysteria2",
+    "listen": "::",
+    "listen_port": 20143,
+    "users": [{ "password": "4519a3fa-b2f4-4edc-9fa2-7f9433110665" }],
+    "masquerade": "https://bing.com",
+    "tls": {
+      "enabled": true,
+      "alpn": ["h3"],
+      "certificate_path": "/home/container/.npm/cert.pem",
+      "key_path": "/home/container/.npm/private.key"
+    }
+  }, {
+    "type": "vless",
+    "listen": "::",
+    "listen_port": 20143,
+    "users": [
+      {
+        "uuid": "4519a3fa-b2f4-4edc-9fa2-7f9433110665",
+        "flow": "xtls-rprx-vision"
+      }
+    ],
+    "tls": {
+      "enabled": true,
+      "server_name": "www.nazhumi.com",
+      "reality": {
+        "enabled": true,
+        "handshake": { "server": "www.nazhumi.com", "server_port": 443 },
+        "private_key": "8IBXlzDxxj8heJzkFpgjOwMK0vRVytxuUUl2SCqCwWM",
+        "short_id": [""]
+      }
+    }
+  }],
+  "outbounds": [
+    { "type": "direct" },
+
+    {
+      "type": "socks",
+      "tag": "SOCKS5-PROXY",
+      "server": "127.0.0.1",
+      "server_port": 1080,
+      "version": "5",
+      "username": "g7envpwz14b0u55",
+      "password": "juvytdsdzc225pq"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "domain": [".*"],
+        "outbound": "SOCKS5-PROXY"
+      },
+      {
+        "protocol": "dns",
+        "outbound": "SOCKS5-PROXY"
+      }
+    ],
+    "final": "SOCKS5-PROXY"
+  }
+}
